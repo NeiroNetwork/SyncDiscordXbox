@@ -9,7 +9,7 @@ require_once dirname(__DIR__) . "/src/dotenv_validator.php";
 session_start();
 
 if(isset($_GET["error"])) {
-	header("Location: discord:///channels/" . $_ENV["DISCORD_SERVER_ID"]);
+	header("Location: discord:///channels/" . $_ENV["DISCORD_GUILD_ID"]);
 	exit;
 }
 

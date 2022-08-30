@@ -23,7 +23,7 @@ if(isset($_GET["code"], $_GET["state"], $_SESSION["oauth2state"]) && $_GET["stat
 		$guilds = $provider->getParsedResponse($guildsRequest);
 
 		$guildIds = array_map(fn(array $guild) => $guild["id"], $guilds);
-		if(!in_array($_ENV["DISCORD_SERVER_ID"], $guildIds, true)) {
+		if(!in_array($_ENV["DISCORD_GUILD_ID"], $guildIds, true)) {
 			echo "First you need to join Neiro Network's Discord server!";
 			die;
 		}
