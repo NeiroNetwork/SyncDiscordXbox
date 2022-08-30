@@ -28,8 +28,7 @@ if(!empty($_SESSION["discord_id"])){
 
 // 両方が揃った
 if(is_string($_SESSION["discord_id"]) && is_string($_SESSION["xuid"]) && is_string($_SESSION["gamertag"])){
-	echo "<pre>";
-	var_dump($_SESSION);
+	require_once dirname(__DIR__) . "/src/sync_accounts.php";
 	session_destroy();
 }else{
 	echo "Something went wrong!";
