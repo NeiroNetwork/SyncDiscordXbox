@@ -29,3 +29,11 @@ DiscordアカウントとXboxアカウントを紐づけるやつ
    - CLIENT ID (APPLICATION ID): `DISCORD_CLIENT_ID`
    - CLIENT SECRET: `DISCORD_CLIENT_SECRET`
    - (Redirects) URI: `DISCORD_REDIRECT_URI`
+
+### Discord Bot
+サーバーでロールを付与するためのボットを作成する
+1. Bot タブ → "Add Bot" をクリックしてボットを作成
+2. PUBLIC BOT (誰でもボットをサーバーに追加できる) はOFFにしておく
+3. "Reset Token" をクリックしてトークンを再生成する
+   - 生成されたトークンはコピーしておく
+4. https://discord.com/api/oauth2/authorize?scope=bot&client_id=クライアントID でボットをサーバーに参加させる
