@@ -35,5 +35,5 @@ if(is_string($_SESSION["discord_id"]) && is_string($_SESSION["xuid"]) && is_stri
 	// 到達不能
 }else{
 	session_destroy();
-	generatePage("認証に失敗しました", "想定されていないエラーが発生しました。");
+	generatePage("認証に失敗しました", "想定されていないエラーが発生しました。最初からやり直してください。");
 }
