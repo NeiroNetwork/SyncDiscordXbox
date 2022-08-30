@@ -13,5 +13,4 @@ require_once dirname(__DIR__) . "/src/connect_database.php";
 Capsule::schema()->create("discord_xuid_map", function(Blueprint $table) : void{
 	$table->bigInteger("discord_id")->unsigned()->primary();
 	$table->bigInteger("xuid")->unsigned()->nullable(false);
-	$table->timestampsTz();
 });
