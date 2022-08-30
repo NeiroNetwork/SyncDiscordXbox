@@ -26,6 +26,7 @@ try{
 	Capsule::table("discord_xuid_map")->upsert(["discord_id" => $userId, "xuid" => $xuid], "discord_id");
 }catch(PDOException){
 	session_destroy();
+	// FIXME: すでに認証されていた場合、今までのロールやニックネームが消えてしまう
 	$discord->guild->removeGuildMemberRole(["guild.id" => $guildId, "user.id" => $userId, "role.id" => $roleId]);
 	$discord->guild->modifyGuildMember(["guild.id" => $guildId, "user.id" => $userId, "nick" => ""]);
 	generatePage(
