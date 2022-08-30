@@ -32,7 +32,7 @@ if(!empty($_SESSION["discord_id"]) && empty($_SESSION["xuid"])){
 // 両方が揃った
 if(is_string($_SESSION["discord_id"]) && is_string($_SESSION["xuid"]) && is_string($_SESSION["gamertag"])){
 	require_once dirname(__DIR__) . "/src/sync_accounts.php";
-	session_destroy();
+	// 到達不能
 }else{
 	session_destroy();
 	generatePage("認証に失敗しました", "想定されていないエラーが発生しました。");
