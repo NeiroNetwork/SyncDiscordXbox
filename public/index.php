@@ -5,12 +5,15 @@ declare(strict_types=1);
 require_once dirname(__DIR__) . "/vendor/autoload.php";
 
 require_once dirname(__DIR__) . "/src/dotenv_validator.php";
+require_once dirname(__DIR__) . "/html/page_generator.php";
 
 session_start();
 
-if(isset($_GET["error"])) {
-	header("Location: discord:///channels/" . $_ENV["DISCORD_GUILD_ID"]);
-	exit;
+if(isset($_GET["error"])){
+	generatePage(
+		"認証がキャンセルされました",
+		"アプリケーションの認証中にエラーが発生しました。アカウントの連携はまだ完了していません。"
+	);
 }
 
 // Discordの認証
@@ -31,5 +34,6 @@ if(is_string($_SESSION["discord_id"]) && is_string($_SESSION["xuid"]) && is_stri
 	require_once dirname(__DIR__) . "/src/sync_accounts.php";
 	session_destroy();
 }else{
-	echo "Something went wrong!";
+	session_destroy();
+	generatePage("認証に失敗しました", "想定されていないエラーが発生しました。");
 }

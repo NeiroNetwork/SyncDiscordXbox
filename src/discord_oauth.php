@@ -24,8 +24,11 @@ if(isset($_GET["code"], $_GET["state"], $_SESSION["oauth2state"]) && $_GET["stat
 
 		$guildIds = array_map(fn(array $guild) => $guild["id"], $guilds);
 		if(!in_array($_ENV["DISCORD_GUILD_ID"], $guildIds, true)) {
-			echo "First you need to join Neiro Network's Discord server!";
-			die;
+			generatePage(
+				"認証がキャンセルされました",
+				"あなたは音色ネットワークのDiscordサーバーに参加していません。
+				アカウントを連携するには、音色ネットワークのDiscordサーバーに参加する必要があります。"
+			);
 		}
 
 		/** @var DiscordResourceOwner $user */
