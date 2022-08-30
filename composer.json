@@ -3,6 +3,7 @@
         "bigpino67/oauth2-xblive": "dev-master",
         "wohali/oauth2-discord-new": "dev-master",
         "vlucas/phpdotenv": "^5.4",
-        "restcord/restcord": "v9.x-dev"
+        "restcord/restcord": "v9.x-dev",
+        "illuminate/database": "^9.26"
     }
 }

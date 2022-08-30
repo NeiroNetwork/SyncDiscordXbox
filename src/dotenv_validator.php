@@ -16,4 +16,8 @@ $dotenv->required([
 	"DISCORD_BOT_TOKEN",
 	"DISCORD_GUILD_ID",
 	"MEMBER_ROLE_ID",
+	"DB_HOST",
+	"DB_DATABASE",
+	"DB_USERNAME",
+	"DB_PASSWORD",
 ])->notEmpty();

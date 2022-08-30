@@ -41,3 +41,18 @@ DiscordアカウントとXboxアカウントを紐づけるやつ
 - ボットのロールがメンバーのロールより高くなっている必要がある
 - オーナー又は上位のロールが付与されたユーザーの編集はできない (https://stackoverflow.com/q/45251598)
   - 管理者権限が付いていても下位ロールなら無視される
+
+## データベースのセットアップ
+データベースにはMySQLを使用します。
+[illuminate/database](https://github.com/illuminate/database) を使用しているのでMySQL以外も使えるはずです。
+詳細は https://laravel.com/docs/database をご覧ください。
+### 設定ファイルを編集
+`.env` のそれぞれの値を編集します。
+- `DB_HOST`: データベースのホストアドレス
+- `DB_DATABASE`: データベースの名前
+- `DB_USERNAME`: データベースにアクセスするためのユーザー名
+- `DB_PASSWORD`: ユーザーのパスワード
+### テーブルの作成 (マイグレーション)
+```bash
+php scripts/database_up.php
+```
