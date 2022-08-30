@@ -37,3 +37,4 @@ DiscordアカウントとXboxアカウントを紐づけるやつ
 3. "Reset Token" をクリックしてトークンを再生成する
    - 生成されたトークンはコピーしておく
 4. https://discord.com/api/oauth2/authorize?permissions=268435456&scope=bot&client_id=クライアントID でボットをサーバーに参加させる
+5. (注意) ボットのロールがメンバーのロールより高くなっていることを確認してください
