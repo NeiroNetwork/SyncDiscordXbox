@@ -26,7 +26,7 @@ if(isset($_GET["code"], $_GET["state"], $_SESSION["oauth2state"]) && $_GET["stat
 		if(!in_array($_ENV["DISCORD_GUILD_ID"], $guildIds, true)) {
 			generatePage(
 				"認証がキャンセルされました",
-				"あなたは音色ネットワークのDiscordサーバーに参加していません。
+				"あなたはDiscordサーバーに参加していません。
 				アカウントを連携するには、音色ネットワークのDiscordサーバーに参加する必要があります。"
 			);
 		}
