@@ -1,6 +1,28 @@
 # SyncDiscordXbox
 DiscordアカウントとXboxアカウントを紐づけるやつ
 
+## デプロイ(展開) の手順
+### リポジトリのクローン
+```bash
+git clone git@github.com:NeiroNetwork/SyncDiscordXbox.git
+```
+### `.env` ファイルを作成 (コピー)
+```bash
+cp sample.env .env
+```
+### 依存関係をインストール
+本番環境用にフラグを追加しています
+```bash
+composer install --no-dev --prefer-dist --classmap-authoritative
+```
+### データベースのマイグレーション
+<a href="#データベースのセットアップ">データベースのセットアップ</a> も参照
+```bash
+php scripts/database_up.php
+```
+### 公開
+下に記載されているアプリケーションやボットのセットアップが済んだら、nginxなどのソフトウェアで `public/` 以下を公開します。
+
 ## アプリケーションのセットアップ
 ### Xbox Live OAuth2
 1. https://go.microsoft.com/fwlink/?linkid=2083908 にアクセス
@@ -55,4 +77,13 @@ DiscordアカウントとXboxアカウントを紐づけるやつ
 ### テーブルの作成 (マイグレーション)
 ```bash
 php scripts/database_up.php
+```
+
+## ローカルでのテスト
+ポートは`8080`から好きなポートに変更可能です。
+1. 各種アプリケーションのリダイレクトURIに `http://localhost:8080` を追加
+2. `.env` のリダイレクトURIも `http://localhost:8080` に設定
+3. テストサーバーを起動する
+```bash
+php -S localhost:8080 -t public
 ```
