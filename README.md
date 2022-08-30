@@ -18,7 +18,7 @@ composer install --no-dev --prefer-dist --classmap-authoritative
 ### データベースのマイグレーション
 <a href="#データベースのセットアップ">データベースのセットアップ</a> も参照
 ```bash
-php scripts/database_up.php
+php scripts/up_database.php
 ```
 ### 公開
 下に記載されているアプリケーションやボットのセットアップが済んだら、nginxなどのソフトウェアで `public/` 以下を公開します。
@@ -76,7 +76,7 @@ php scripts/database_up.php
 - `DB_PASSWORD`: ユーザーのパスワード
 ### テーブルの作成 (マイグレーション)
 ```bash
-php scripts/database_up.php
+php scripts/up_database.php
 ```
 
 ## ローカルでのテスト
