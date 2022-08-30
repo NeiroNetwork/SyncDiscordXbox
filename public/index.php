@@ -20,7 +20,7 @@ if(empty($_SESSION["discord_id"]) || !is_string($_SESSION["discord_id"])){
 }
 
 // Xbox Liveの認証
-if(!empty($_SESSION["discord_id"])){
+if(!empty($_SESSION["discord_id"]) && empty($_SESSION["xuid"])){
 	$result = require_once dirname(__DIR__) . "/src/xboxlive_oauth.php";
 	$_SESSION["xuid"] = $result === 1 ? exit : $result[0];
 	$_SESSION["gamertag"] = $result[1];
