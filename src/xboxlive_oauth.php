@@ -22,7 +22,6 @@ if(isset($_GET["code"], $_GET["state"], $_SESSION["oauth2state"]) && $_GET["stat
 		$profile = $profiles->getLoggedUserProfile();
 
 		return [$profile->getId(), $profile->getSettings()->getGamertag()];
-		var_dump($profile->getId(), $profile->getSettings()->getGamertag());
 	}catch(IdentityProviderException){}
 }
 
