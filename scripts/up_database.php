@@ -10,7 +10,7 @@ use NeiroNetwork\SyncDiscordXbox\ApplicationInitializer;
 
 ApplicationInitializer::run();
 
-Capsule::schema()->create("discord_xuid_map", function(Blueprint $table) : void{
-	$table->bigInteger("discord_id")->unsigned()->primary();
+Capsule::schema()->create("accounts", function(Blueprint $table) : void{
+	$table->bigInteger("discord")->unsigned()->primary();
 	$table->bigInteger("xuid")->unsigned()->nullable(false);
 });

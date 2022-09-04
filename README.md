@@ -61,8 +61,8 @@ php scripts/up_database.php
 4. https://discord.com/api/oauth2/authorize?client_id=0000000000000000000&permissions=402653184&scope=bot でボットをサーバーに参加させる
 #### 注意すべきこと
 - ボットのロールがメンバーのロールより高くなっている必要がある
-- オーナー又は上位のロールが付与されたユーザーの編集はできない (https://stackoverflow.com/q/45251598)
-  - 管理者権限が付いていても下位ロールなら無視される
+- オーナー又は上位のロールが付与されたユーザーのニックネームは編集できない (https://stackoverflow.com/q/45251598)
+  - ロールの管理者権限は関係なく、あくまでもロールの順位に依存する
 
 ## データベースのセットアップ
 データベースにはMySQLまたはSQLite3を使用します。
