@@ -58,22 +58,29 @@ php scripts/up_database.php
 2. PUBLIC BOT (誰でもボットをサーバーに追加できる) はOFFにしておく
 3. "Reset Token" をクリックしてトークンを再生成する
    - 生成されたトークンはコピーしておく
-4. https://discord.com/api/oauth2/authorize?permissions=402653184&scope=bot&client_id=クライアントID でボットをサーバーに参加させる
+4. https://discord.com/api/oauth2/authorize?client_id=0000000000000000000&permissions=402653184&scope=bot でボットをサーバーに参加させる
 #### 注意すべきこと
 - ボットのロールがメンバーのロールより高くなっている必要がある
 - オーナー又は上位のロールが付与されたユーザーの編集はできない (https://stackoverflow.com/q/45251598)
   - 管理者権限が付いていても下位ロールなら無視される
 
 ## データベースのセットアップ
-データベースにはMySQLを使用します。
-[illuminate/database](https://github.com/illuminate/database) を使用しているのでMySQL以外も使えるはずです。
-詳細は https://laravel.com/docs/database をご覧ください。
-### 設定ファイルを編集
+データベースにはMySQLまたはSQLite3を使用します。
+### MySQL を使用する場合
 `.env` のそれぞれの値を編集します。
+- `DB_DRIVER=mysql`: ドライバーにMySQLを使用します
 - `DB_HOST`: データベースのホストアドレス
 - `DB_DATABASE`: データベースの名前
 - `DB_USERNAME`: データベースにアクセスするためのユーザー名
 - `DB_PASSWORD`: ユーザーのパスワード
+### SQLite3 を使用する場合
+`.env` のそれぞれの値を編集します。
+- `DB_DRIVER=sqlite`
+- `DB_DATABASE`: データベースのファイルパス
+データベースファイルが存在しない場合は、ファイルを作成します(コマンドは例です)。
+```bash
+touch database.sqlite
+```
 ### テーブルの作成 (マイグレーション)
 ```bash
 php scripts/up_database.php

@@ -6,9 +6,9 @@ require_once dirname(__DIR__) . "/vendor/autoload.php";
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Database\Schema\Blueprint;
+use NeiroNetwork\SyncDiscordXbox\ApplicationInitializer;
 
-require_once dirname(__DIR__) . "/src/dotenv_validator.php";
-require_once dirname(__DIR__) . "/src/connect_database.php";
+ApplicationInitializer::run();
 
 Capsule::schema()->create("discord_xuid_map", function(Blueprint $table) : void{
 	$table->bigInteger("discord_id")->unsigned()->primary();

@@ -22,7 +22,6 @@ try{
 }
 
 try{
-	require_once dirname(__DIR__) . "/src/connect_database.php";
 	Capsule::table("discord_xuid_map")->upsert(["discord_id" => $userId, "xuid" => $xuid], "discord_id");
 }catch(PDOException){
 	session_destroy();
