@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace NeiroNetwork\SyncDiscordXbox;
 
-class PageGenerator{
+final class PageGenerator{
 
 	protected static function generate(string $name, array $params) : never{
 		$template = file_get_contents(dirname(__DIR__) . "/html/$name.html");

@@ -37,6 +37,7 @@ if(!empty($_SESSION["step_one"]) && !empty($_SESSION["step_two"])){
 	$discord = $_SESSION["step_one"];
 	$xbox = $_SESSION["step_two"];
 	session_destroy();
+
 	if($discord instanceof DiscordResourceOwner && $xbox instanceof Profile){
 		AccountSynchronizer::sync($discord, $xbox);
 	}else{

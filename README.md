@@ -75,8 +75,8 @@ php scripts/up_database.php
 - `DB_PASSWORD`: ユーザーのパスワード
 ### SQLite3 を使用する場合
 `.env` のそれぞれの値を編集します。
-- `DB_DRIVER=sqlite`
-- `DB_DATABASE`: データベースのファイルパス
+- `DB_DRIVER=sqlite`: ドライバーにSQLite3を使用します
+- `DB_DATABASE`: データベースのファイルパス (バグを防ぐためフルパスを指定することをお勧めします。)
 データベースファイルが存在しない場合は、ファイルを作成します(コマンドは例です)。
 ```bash
 touch database.sqlite
