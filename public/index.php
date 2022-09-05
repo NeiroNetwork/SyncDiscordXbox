@@ -13,6 +13,7 @@ use NeiroNetwork\SyncDiscordXbox\PageGenerator;
 use Wohali\OAuth2\Client\Provider\DiscordResourceOwner;
 
 ApplicationInitializer::run();
+header("X-Frame-Options: DENY");
 session_start();
 
 if(isset($_GET["error"])){
