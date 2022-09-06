@@ -12,7 +12,7 @@ use Wohali\OAuth2\Client\Provider\DiscordResourceOwner;
 
 class AccountSynchronizer{
 
-	public static function sync(DiscordResourceOwner $account1, Profile $account2) : void{
+	public static function sync(DiscordResourceOwner $account1, Profile $account2) : never{
 		$duid = (int) $account1->getId();
 		self::storeData($duid, (int) $account2->getId());
 		self::modifyUser($duid, (int) $_ENV["MEMBER_ROLE_ID"], $account2->getSettings()->getGamertag());

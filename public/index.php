@@ -23,6 +23,8 @@ if(isset($_GET["error"])){
 	);
 }
 
+if(isset($_GET["reset"])) session_destroy() && session_start();
+
 // Discordの認証
 if(empty($_SESSION["step_one"])){
 	$_SESSION["step_one"] = (new DiscordAuthenticator())->auth();
@@ -37,10 +39,22 @@ if(!empty($_SESSION["step_one"]) && empty($_SESSION["step_two"])){
 if(!empty($_SESSION["step_one"]) && !empty($_SESSION["step_two"])){
 	$discord = $_SESSION["step_one"];
 	$xbox = $_SESSION["step_two"];
-	session_destroy();
+
+	if(isset($_SESSION["sync_prepared"])){
+		session_destroy();
+		AccountSynchronizer::sync($discord, $xbox);
+	}
 
 	if($discord instanceof DiscordResourceOwner && $xbox instanceof Profile){
-		AccountSynchronizer::sync($discord, $xbox);
+		$_SESSION["sync_prepared"] = true;
+
+		PageGenerator::CONNECT_CONFIRM(
+			// https://github.com/wohali/oauth2-discord-new/issues/14#issuecomment-432018789
+			"https://cdn.discordapp.com/avatars/{$discord->getId()}/{$discord->getAvatarHash()}.png",
+			"{$discord->getUsername()}#{$discord->getDiscriminator()}",
+			"{$xbox->getSettings()->getGameDisplayPicRaw()}",
+			"{$xbox->getSettings()->getGamertag()}"
+		);
 	}else{
 		PageGenerator::DIALOG(
 			"認証フローが失敗しました",
