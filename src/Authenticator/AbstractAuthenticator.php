@@ -12,8 +12,7 @@ abstract class AbstractAuthenticator{
 
 	protected AbstractProvider $provider;
 
-	/** @var string[] */
-	protected array $scopes;
+	protected string $scope;
 
 	public function auth() : mixed{
 		if(isset($_GET["code"], $_GET["state"], $_SESSION["oauth2state"]) && $_GET["state"] === $_SESSION["oauth2state"]){
@@ -24,7 +23,7 @@ abstract class AbstractAuthenticator{
 		}
 
 		unset($_SESSION["oauth2state"]);
-		$authorizationUrl = $this->provider->getAuthorizationUrl(["scope" => $this->scopes]);
+		$authorizationUrl = $this->provider->getAuthorizationUrl(["scope" => $this->scope]);
 		$_SESSION['oauth2state'] = $this->provider->getState();
 		header("Location: $authorizationUrl");
 		exit;

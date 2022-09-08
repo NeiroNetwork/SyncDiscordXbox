@@ -17,7 +17,7 @@ class DiscordAuthenticator extends AbstractAuthenticator{
 			"clientSecret" => $_ENV["DISCORD_CLIENT_SECRET"],
 			"redirectUri" => $_ENV["DISCORD_REDIRECT_URI"],
 		]);
-		$this->scopes = ["identify", "guilds"];
+		$this->scope = "identify";
 	}
 
 	protected function authenticateUser(AccessToken $token): DiscordResourceOwner{

@@ -17,7 +17,7 @@ class XboxliveAuthenticator extends AbstractAuthenticator{
 			"clientSecret" => $_ENV["XBL_CLIENT_SECRET"],
 			"redirectUri" => $_ENV["XBL_REDIRECT_URI"],
 		]);
-		$this->scopes = ["xbl.signin"];
+		$this->scope = "xbl.signin";
 	}
 
 	protected function authenticateUser(AccessToken $token): Profile{
