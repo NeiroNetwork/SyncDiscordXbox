@@ -9,6 +9,7 @@ git clone git@github.com:NeiroNetwork/SyncDiscordXbox.git
 ### `.env` ファイルを作成 (コピー)
 ```bash
 cp sample.env .env
+chmod o-r .env
 ```
 ### 依存関係をインストール
 本番環境用にフラグを追加しています
