@@ -37,6 +37,7 @@ a:hover {
 .icon-wrapper {
     display: inline-block;
     position: relative;
+    height: 64px;
 }
 
 .icon-wrapper img {
@@ -44,12 +45,28 @@ a:hover {
     height: 64px;
 }
 
-.icon-wrapper img + img {
-    background-color: white;
+.icon-attachment {
+    width: 24px;
     height: 24px;
     position: absolute;
     right: 0;
-    bottom: 8px;
+    bottom: 0;
+    border-radius: 50%;
+    background-position: center;
+    background-attachment: local;
+    background-repeat: no-repeat;
+}
+
+.discord-icon {
+    background-color: #5865F2;
+    background-image: url("assets/discord.svg");
+    background-size: 80%;
+}
+
+.xbox-icon {
+    background-color: white;
+    background-image: url("assets/xbox.svg");
+    background-size: 90%;
 }
 
 button {
