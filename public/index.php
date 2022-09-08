@@ -34,7 +34,15 @@ if(isset($_GET["reset"])) session_destroy() && session_start();
 
 // Discordの認証
 if(empty($_SESSION["step_one"])){
-	$_SESSION["step_one"] = new DiscordAccount((new DiscordAuthenticator())->auth());
+	$discordAccount = new DiscordAccount((new DiscordAuthenticator())->auth());
+	if(!$discordAccount->serverJoined){
+		PageGenerator::DIALOG(
+			"認証に失敗しました",
+			"あなたのDiscordアカウントは音色ネットワークのDiscordサーバーに参加していません。"
+			. "アカウントを連携するにはサーバーに参加する必要があります。"
+		);
+	}
+	$_SESSION["step_one"] = $discordAccount;
 }
 
 // Xbox Liveの認証
