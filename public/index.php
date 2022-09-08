@@ -58,8 +58,8 @@ if(!empty($_SESSION["step_one"]) && !empty($_SESSION["step_two"])){
 	$xbox = $_SESSION["step_two"];
 
 	if(isset($_SESSION["sync_prepared"])){
-		//session_destroy();
-		//AccountSynchronizer::sync($discord, $xbox);
+		session_destroy();
+		AccountSynchronizer::sync($discord, $xbox);
 	}
 
 	$_SESSION["sync_prepared"] = true;
