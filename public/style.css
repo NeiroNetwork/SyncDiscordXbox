@@ -32,6 +32,7 @@ a:hover {
 
 .accounts-grid div p {
     margin: 0;
+    font-size: 15px;
 }
 
 .icon-wrapper {
@@ -76,8 +77,8 @@ button {
 }
 
 .colored-button {
-    font-size: 18px;
-    transition-duration: 170ms;
+    font-size: 17px;
+    transition-duration: 140ms;
     background-color: #78909c;
     color: white;
     border: none;
