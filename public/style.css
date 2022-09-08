@@ -73,11 +73,3 @@ button {
 .colored-button:active {
     background-color: #627680;
 }
-
-.pre-error {
-    padding: 8px;
-    color: #101010;
-    background-color: #fafafa;
-    border-radius: 4px;
-    border: 1px solid #f0f0f0;
-}

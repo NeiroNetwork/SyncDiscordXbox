@@ -31,14 +31,4 @@ final class PageGenerator{
 		]);
 		exit;
 	}
-
-	/**
-	 * @deprecated この関数は set_error_handler で使うことしか想定されていません！
-	 */
-	public static function ERROR_DIALOG(string $error) : void{
-		self::generate("template3", [
-			"%INSERT_ERROR_CODE%" => $error,
-			"%DISCORD_URI%" => "discord:///channels/" . $_ENV["DISCORD_GUILD_ID"],
-		]);
-	}
 }

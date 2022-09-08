@@ -12,11 +12,6 @@ use NeiroNetwork\SyncDiscordXbox\Authenticator\DiscordAuthenticator;
 use NeiroNetwork\SyncDiscordXbox\Authenticator\XboxliveAuthenticator;
 use NeiroNetwork\SyncDiscordXbox\PageGenerator;
 
-set_error_handler(function(int $errno, string $errstr) : bool{
-	PageGenerator::ERROR_DIALOG(bin2hex(date("Y/m/d H:i:s")));
-	return true;
-});
-
 ApplicationInitializer::run();
 header("X-Frame-Options: DENY");
 session_start();
