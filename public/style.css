@@ -1,0 +1,93 @@
+body {
+    margin: 0;
+    height: 100vh;
+    display: grid;
+    place-items: center;
+    background-color: #edf0f2;
+}
+
+a {
+    text-decoration-line: none;
+}
+
+a:hover {
+    text-decoration-line: underline;
+}
+
+.dialog-box {
+    max-width: 400px;
+    padding: 2ch;
+    background-color: white;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.accounts-grid {
+    display: grid;
+    grid-template-columns:1fr 1fr;
+}
+
+.accounts-grid div {
+    text-align: center;
+}
+
+.accounts-grid div p {
+    margin: 0;
+    font-size: 15px;
+}
+
+.icon-wrapper {
+    display: inline-block;
+    position: relative;
+    height: 64px;
+}
+
+.icon-wrapper img {
+    border-radius: 50%;
+    height: 64px;
+}
+
+.icon-attachment {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    background-position: center;
+    background-attachment: local;
+    background-repeat: no-repeat;
+}
+
+.discord-icon {
+    background-color: #5865F2;
+    background-image: url("assets/discord.svg");
+    background-size: 80%;
+}
+
+.xbox-icon {
+    background-color: white;
+    background-image: url("assets/xbox.svg");
+    background-size: 90%;
+}
+
+button {
+    padding: 16px 32px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.colored-button {
+    font-size: 17px;
+    transition-duration: 140ms;
+    background-color: #78909c;
+    color: white;
+    border: none;
+}
+
+.colored-button:hover {
+    background-color: #6c828c;
+}
+
+.colored-button:active {
+    background-color: #627680;
+}

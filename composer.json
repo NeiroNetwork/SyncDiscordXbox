@@ -5,5 +5,10 @@
         "vlucas/phpdotenv": "^5.4",
         "restcord/restcord": "v9.x-dev",
         "illuminate/database": "^9.26"
+    },
+    "autoload": {
+        "psr-4": {
+            "NeiroNetwork\\SyncDiscordXbox\\": "src/"
+        }
     }
 }
