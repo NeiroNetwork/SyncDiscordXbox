@@ -28,11 +28,11 @@
 	</div>
 	<p>
 		連携するアカウントを間違えましたか？
-		<a href="https://account.xbox.com/account/signout" target="_blank" rel="noopener noreferrer">Xboxアカウントからサインアウト</a>
+		<a href="https://account.xbox.com/account/signout" target="_blank" rel="noopener noreferrer" onclick="lbutton.disabled=true">Xboxアカウントからサインアウト</a>
 		して、<a href="/?reset">認証をやりなおす</a>ことができます。
 	</p>
 	<form>
-		<button class="colored-button" style="width: 100%">アカウントを連携する</button>
+		<button id="lbutton" class="colored-button" style="width: 100%">アカウントを連携する</button>
 		<input type="hidden" name="link">
 	</form>
 </div>

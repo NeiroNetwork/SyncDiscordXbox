@@ -91,3 +91,9 @@ button {
 .colored-button:active {
     background-color: #627680;
 }
+
+.colored-button:disabled, .colored-button[disabled] {
+    background-color: #78909c;
+    cursor: not-allowed;
+    text-decoration: line-through;
+}
