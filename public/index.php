@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 require_once dirname(__DIR__) . "/vendor/autoload.php";
 
+use GuzzleHttp\Command\Exception\CommandClientException;
+use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use NeiroNetwork\SyncDiscordXbox\Account\DiscordAccount;
 use NeiroNetwork\SyncDiscordXbox\Account\XboxAccount;
 use NeiroNetwork\SyncDiscordXbox\AccountSynchronizer;
@@ -34,20 +36,31 @@ if(isset($_GET["reset"])) session_destroy() && session_start();
 
 // Discordの認証
 if(empty($_SESSION["step_one"])){
-	$discordAccount = (new DiscordAuthenticator())->getAccount();
+	$authenticator = new DiscordAuthenticator();
+	try{
+		$discordAccount = $authenticator->getAccount();
+	}catch(IdentityProviderException){
+		$authenticator->startWebAuthentication();
+	}
+
 	if(!$discordAccount->serverJoined){
 		PageGenerator::DIALOG(
 			"認証に失敗しました",
-			"あなたのDiscordアカウントは音色ネットワークのDiscordサーバーに参加していません。"
-			. "アカウントを連携するにはサーバーに参加する必要があります。"
+			"あなたのDiscordアカウントは音色ネットワークのDiscordサーバーに参加していません。アカウントを連携するにはサーバーに参加する必要があります。"
 		);
 	}
+
 	$_SESSION["step_one"] = $discordAccount;
 }
 
 // Xbox Liveの認証
 if(!empty($_SESSION["step_one"]) && empty($_SESSION["step_two"])){
-	$_SESSION["step_two"] = (new XboxliveAuthenticator())->getAccount();
+	$authenticator = new XboxliveAuthenticator();
+	try{
+		$_SESSION["step_two"] = $authenticator->getAccount();
+	}catch(IdentityProviderException){
+		$authenticator->startWebAuthentication();
+	}
 }
 
 // 両方が揃った
@@ -59,7 +72,20 @@ if(!empty($_SESSION["step_one"]) && !empty($_SESSION["step_two"])){
 
 	if(isset($_GET["link"])){
 		session_destroy();
-		AccountSynchronizer::sync($discord, $xbox);
+		try{
+			AccountSynchronizer::sync($discord, $xbox);
+		}catch(CommandClientException){
+			PageGenerator::DIALOG(
+				"認証に失敗しました",
+				"Discordアカウントとの連携中にエラーが発生しました。もう一度お試しください。"
+			);
+		}catch(Exception){
+			PageGenerator::DIALOG(
+				"認証に失敗しました",
+				"データベースに内部エラーが発生しました。しばらく待ってから再度お試しください。"
+			);
+		}
+		PageGenerator::DIALOG("認証に成功しました", "アカウントの連携が完了しました。安全にこのページを閉じることができます。");
 	}
 
 	PageGenerator::CONNECT_CONFIRM($discord->avatar, $discord->name, $xbox->avatar, $xbox->name);

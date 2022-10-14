@@ -57,9 +57,10 @@ php scripts/up_database.php
 サーバーでロールを付与するためのボットを作成する
 1. Bot タブ → "Add Bot" をクリックしてボットを作成
 2. PUBLIC BOT (誰でもボットをサーバーに追加できる) はOFFにしておく
-3. "Reset Token" をクリックしてトークンを再生成する
+3. サーバーのメンバー更新通知に "SERVER MEMBERS INTENT" が必要なのでONにしておく
+4. "Reset Token" をクリックしてトークンを再生成する
    - 生成されたトークンはコピーしておく
-4. https://discord.com/api/oauth2/authorize?client_id=0000000000000000000&permissions=402653184&scope=bot でボットをサーバーに参加させる
+5. https://discord.com/api/oauth2/authorize?client_id=0000000000000000000&permissions=402653184&scope=bot でボットをサーバーに参加させる
 #### 注意すべきこと
 - ボットのロールがメンバーのロールより高くなっている必要がある
 - オーナー又は上位のロールが付与されたユーザーのニックネームは編集できない (https://stackoverflow.com/q/45251598)

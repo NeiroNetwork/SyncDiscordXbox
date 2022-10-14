@@ -7,7 +7,6 @@ namespace NeiroNetwork\SyncDiscordXbox;
 use Dotenv\Dotenv;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
-// FIXME: ApplicationInitializer はしっくりこない… もっといい名前があるはず
 final class ApplicationInitializer{
 
 	public static function run() : void{
