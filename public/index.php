@@ -57,11 +57,10 @@ if(!empty($_SESSION["step_one"]) && !empty($_SESSION["step_two"])){
 	/** @var XboxAccount $xbox */
 	$xbox = $_SESSION["step_two"];
 
-	if(isset($_SESSION["sync_prepared"])){
+	if(isset($_GET["link"])){
 		session_destroy();
 		AccountSynchronizer::sync($discord, $xbox);
 	}
 
-	$_SESSION["sync_prepared"] = true;
 	PageGenerator::CONNECT_CONFIRM($discord->avatar, $discord->name, $xbox->avatar, $xbox->name);
 }
