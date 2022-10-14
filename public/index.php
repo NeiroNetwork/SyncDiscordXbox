@@ -34,7 +34,7 @@ if(isset($_GET["reset"])) session_destroy() && session_start();
 
 // Discordの認証
 if(empty($_SESSION["step_one"])){
-	$discordAccount = new DiscordAccount((new DiscordAuthenticator())->auth());
+	$discordAccount = (new DiscordAuthenticator())->getAccount();
 	if(!$discordAccount->serverJoined){
 		PageGenerator::DIALOG(
 			"認証に失敗しました",
@@ -47,7 +47,7 @@ if(empty($_SESSION["step_one"])){
 
 // Xbox Liveの認証
 if(!empty($_SESSION["step_one"]) && empty($_SESSION["step_two"])){
-	$_SESSION["step_two"] = new XboxAccount((new XboxliveAuthenticator())->auth());
+	$_SESSION["step_two"] = (new XboxliveAuthenticator())->getAccount();
 }
 
 // 両方が揃った

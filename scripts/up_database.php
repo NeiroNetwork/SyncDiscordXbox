@@ -10,7 +10,26 @@ use NeiroNetwork\SyncDiscordXbox\ApplicationInitializer;
 
 ApplicationInitializer::run();
 
-Capsule::schema()->create("accounts", function(Blueprint $table) : void{
-	$table->bigInteger("discord")->unsigned()->primary();
-	$table->bigInteger("xuid")->unsigned()->nullable(false);
-});
+if(!Capsule::schema()->hasTable("accounts")){
+	echo "Creating \"accounts\" table..." . PHP_EOL;
+	Capsule::schema()->create("accounts", function(Blueprint $table) : void{
+		$table->bigInteger("discord")->unsigned()->primary();
+		$table->bigInteger("xuid")->unsigned()->nullable(false);
+	});
+}
+
+if(!Capsule::schema()->hasTable("discord_tokens")){
+	echo "Creating \"discord_tokens\" table..." . PHP_EOL;
+	Capsule::schema()->create("discord_tokens", function(Blueprint $table) : void{
+		$table->bigInteger("id")->unsigned()->primary();
+		$table->text("refresh_token")->nullable(false);
+	});
+}
+
+if(!Capsule::schema()->hasTable("azure_tokens")){
+	echo "Creating \"azure_tokens\" table..." . PHP_EOL;
+	Capsule::schema()->create("azure_tokens", function(Blueprint $table) : void{
+		$table->bigInteger("xuid")->unsigned()->primary();
+		$table->text("refresh_token")->nullable(false);
+	});
+}

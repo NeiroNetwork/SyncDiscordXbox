@@ -7,14 +7,16 @@ namespace NeiroNetwork\SyncDiscordXbox\Account;
 use NeiroNetwork\SyncDiscordXbox\Wrapper\DiscordGuildBot;
 use Wohali\OAuth2\Client\Provider\DiscordResourceOwner;
 
-class DiscordAccount{
+class DiscordAccount extends AccountBase{
 
 	public readonly int $id;
 	public readonly string $name;
 	public readonly string $avatar;
 	public readonly bool $serverJoined;
 
-	public function __construct(DiscordResourceOwner $discord){
+	public function __construct(DiscordResourceOwner $discord, string $refreshToken = null){
+		parent::__construct($refreshToken);
+
 		$this->id = (int) $discord->getId();
 		$this->name = $discord->getUsername() . "#" . $discord->getDiscriminator();
 		$this->avatar = $discord->getAvatarHash() === null
