@@ -1,7 +1,7 @@
 # SyncDiscordXbox
 DiscordアカウントとXboxアカウントを紐づけるやつ
 
-## デプロイ(展開) の手順
+## ウェブサイトのデプロイ(展開)手順
 ### リポジトリのクローン
 ```bash
 git clone git@github.com:NeiroNetwork/SyncDiscordXbox.git
@@ -17,14 +17,14 @@ chmod o-r .env
 composer install --no-dev --prefer-dist --classmap-authoritative
 ```
 ### データベースのマイグレーション
-<a href="#データベースのセットアップ">データベースのセットアップ</a> も参照
+<a href="#データベースの設定について">データベースの設定について</a> も参照
 ```bash
 php scripts/up_database.php
 ```
 ### 公開
 下に記載されているアプリケーションやボットのセットアップが済んだら、nginxなどのソフトウェアで `public/` 以下を公開します。
 
-## アプリケーションのセットアップ
+## OAuth2アプリケーションのセットアップ方法
 ### Xbox Live OAuth2
 1. https://go.microsoft.com/fwlink/?linkid=2083908 にアクセス
 2. "新規登録" をクリック
@@ -66,7 +66,7 @@ php scripts/up_database.php
 - オーナー又は上位のロールが付与されたユーザーのニックネームは編集できない (https://stackoverflow.com/q/45251598)
   - ロールの管理者権限は関係なく、あくまでもロールの順位に依存する
 
-## データベースのセットアップ
+## データベースの設定について
 データベースにはMySQLまたはSQLite3を使用します。
 ### MySQL を使用する場合
 `.env` のそれぞれの値を編集します。
@@ -95,4 +95,10 @@ php scripts/up_database.php
 3. テストサーバーを起動する
 ```bash
 php -S localhost:8080 -t public
+```
+
+## ボットの実行
+`.env` ファイルを書き込み、コマンドを実行します。
+```bash
+php bot/RoleGiver.php
 ```
