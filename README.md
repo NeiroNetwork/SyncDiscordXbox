@@ -19,7 +19,7 @@ composer install --no-dev --prefer-dist --classmap-authoritative
 ### データベースのマイグレーション
 <a href="#データベースの設定について">データベースの設定について</a> も参照
 ```bash
-php scripts/up_database.php
+php scripts/database.php
 ```
 ### 公開
 下に記載されているアプリケーションやボットのセットアップが済んだら、nginxなどのソフトウェアで `public/` 以下を公開します。
@@ -83,9 +83,13 @@ php scripts/up_database.php
 ```bash
 touch database.sqlite
 ```
-### テーブルの作成 (マイグレーション)
+### テーブルの作成(マイグレーション)、削除
 ```bash
-php scripts/up_database.php
+# データベースの作成
+php scripts/database.php up
+
+# データベースの削除
+php scripts/database.php down
 ```
 
 ## ローカルでのテスト
