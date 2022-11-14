@@ -19,17 +19,11 @@ header("X-Frame-Options: DENY");
 session_start();
 
 if(isset($_GET["error"])){
-	if($_GET["error"] === "access_denied"){
-		PageGenerator::DIALOG(
-			"キャンセルされました",
-			"アプリケーションの認証がユーザーによってキャンセルされました。アカウントの連携は完了していません。"
-		);
-	}else{
-		PageGenerator::DIALOG(
-			"認証がキャンセルされました",
-			"アプリケーションの認証中にエラーが発生しました。アカウントの連携は完了していません。"
-		);
-	}
+	$denied = $_GET["error"] === "access_denied";
+	PageGenerator::DIALOG(
+		$denied ? "キャンセルされました" : "認証がキャンセルされました",
+		$denied ? "アプリケーションの認証がユーザーによってキャンセルされました。アカウントの連携は完了していません。" : "アプリケーションの認証中にエラーが発生しました。アカウントの連携は完了していません。"
+	);
 }
 
 if(isset($_GET["reset"])) session_destroy() && session_start();
@@ -70,7 +64,7 @@ if(!empty($_SESSION["step_one"]) && !empty($_SESSION["step_two"])){
 	/** @var XboxAccount $xbox */
 	$xbox = $_SESSION["step_two"];
 
-	if(isset($_GET["link"])){
+	if(isset($_GET["done"])){
 		session_destroy();
 		try{
 			AccountSynchronizer::sync($discord, $xbox);
