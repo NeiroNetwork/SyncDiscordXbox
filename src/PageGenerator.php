@@ -6,15 +6,15 @@ namespace NeiroNetwork\SyncDiscordXbox;
 
 final class PageGenerator{
 
-	protected static function generate(string $name, array $params = []) : void{
-		$template = file_get_contents(dirname(__DIR__) . "/html/$name.html");
+	private static function prepare(string $filename, array $params = []) : string{
+		$template = file_get_contents(dirname(__DIR__) . "/html/$filename");
 		$replaceValues = array_map(htmlspecialchars(...), array_values($params));
 		$html = str_replace(array_keys($params), $replaceValues, $template);
-		echo str_replace(["\n", "\r", "\t"], "", $html);
+		return str_replace(["\n", "\r", "\t"], "", $html);
 	}
 
 	public static function DIALOG(string $title, string $message) : never{
-		self::generate("template1", [
+		echo self::prepare("template1.html", [
 			"%INSERT_TITLE%" => $title,
 			"%INSERT_MESSAGE%" => $message,
 			"%DISCORD_URI%" => "discord:///channels/" . $_ENV["DISCORD_GUILD_ID"],
@@ -23,11 +23,20 @@ final class PageGenerator{
 	}
 
 	public static function CONNECT_CONFIRM(string $discordIcon, string $discordName, string $xblIcon, string $gamertag) : never{
-		self::generate("template2", [
+		$fingerprintJs = "";
+		if(!empty($_ENV["FP_API_KEY"])){
+			$fingerprintJs = self::prepare("fingerprint.js", [
+				"%INSERT_FP_API_KEY%" => $_ENV["FP_API_KEY"],
+				"%INJECT_ENDPOINT_CODE%" => !empty($_ENV["FP_ENDPOINT"]) ? "{endpoint:\"{$_ENV["FP_ENDPOINT"]}\"}" : ""
+			]);
+		}
+
+		echo self::prepare("template2.html", [
 			"%INSERT_ICON_1%" => $discordIcon,
 			"%INSERT_ACCOUNT_1%" => $discordName,
 			"%INSERT_ICON_2%" => $xblIcon,
 			"%INSERT_ACCOUNT_2%" => $gamertag,
+			"%INJECT_FINGERPRINT_JS_CODE%" => $fingerprintJs,
 		]);
 		exit;
 	}

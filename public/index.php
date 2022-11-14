@@ -65,7 +65,7 @@ if(!empty($_SESSION["step_one"]) && !empty($_SESSION["step_two"])){
 	/** @var XboxAccount $xbox */
 	$xbox = $_SESSION["step_two"];
 
-	if(isset($_GET["done"])){
+	if(isset($_GET["request_id"])){
 		session_destroy();
 		try{
 			AccountSynchronizer::sync($discord, $xbox);
