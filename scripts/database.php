@@ -34,6 +34,13 @@ function up(){
 			$table->text("refresh_token")->nullable(false);
 		});
 	}
+
+	if(!Capsule::schema()->hasTable("fingerprints")){
+		echo "Creating \"fingerprints\" table..." . PHP_EOL;
+		Capsule::schema()->create("fingerprints", function(Blueprint $table) : void{
+			$table->json("data");
+		});
+	}
 }
 
 function down(){
@@ -50,6 +57,11 @@ function down(){
 	if(Capsule::schema()->hasTable("azure_tokens")){
 		echo "Deleting \"azure_tokens\" table..." . PHP_EOL;
 		Capsule::schema()->drop("azure_tokens");
+	}
+
+	if(Capsule::schema()->hasTable("fingerprints")){
+		echo "Deleting \"fingerprints\" table..." . PHP_EOL;
+		Capsule::schema()->drop("fingerprints");
 	}
 }
 
