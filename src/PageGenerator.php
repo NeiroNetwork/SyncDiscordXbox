@@ -26,7 +26,7 @@ final class PageGenerator{
 		$fingerprintJs = "";
 		if(!empty($_ENV["FP_API_KEY"])){
 			$fingerprintJs = self::prepare("fingerprint.js", [
-				"%INSERT_FP_API_KEY%" => $_ENV["FP_API_KEY"],
+				"%INSERT_FP_SCRIPT_FILE%" => $_ENV["FP_PUBLIC_KEY"],
 				"%INJECT_ENDPOINT_CODE%" => !empty($_ENV["FP_ENDPOINT"]) ? "{endpoint:\"{$_ENV["FP_ENDPOINT"]}\"}" : ""
 			]);
 		}

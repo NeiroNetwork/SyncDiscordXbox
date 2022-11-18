@@ -1,4 +1,4 @@
-import("%INSERT_FP_API_KEY%")
+import("%INSERT_FP_SCRIPT_FILE%")
 	.then(a=>a.load(%INJECT_ENDPOINT_CODE%))
 	.then(a=>a.get())
 	.then(a=>{
