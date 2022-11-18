@@ -12,7 +12,6 @@ final class ApplicationInitializer{
 	public static function run() : void{
 		self::loadDotenv();
 		self::initDatabase();
-		define("FINGERPRINT_JS_ENABLED", !empty($_ENV["FP_API_KEY"]));
 	}
 
 	private static function loadDotenv() : void{
@@ -29,6 +28,11 @@ final class ApplicationInitializer{
 			"sqlite" => ["DB_DATABASE"],
 			default => throw new \InvalidArgumentException("Undefined database driver " . $_ENV["DB_DRIVER"]),
 		})->notEmpty();
+
+		define("FINGERPRINT_JS_ENABLED", !empty($_ENV["FP_API_KEY"]));
+		if(FINGERPRINT_JS_ENABLED){
+			$dotenv->required(["FP_ENDPOINT", "WEBHOOK_RANDOM"]);
+		}
 	}
 
 	private static function initDatabase() : void{
