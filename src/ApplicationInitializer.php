@@ -12,6 +12,7 @@ final class ApplicationInitializer{
 	public static function run() : void{
 		self::loadDotenv();
 		self::initDatabase();
+		define("FINGERPRINT_JS_ENABLED", !empty($_ENV["FP_API_KEY"]));
 	}
 
 	private static function loadDotenv() : void{

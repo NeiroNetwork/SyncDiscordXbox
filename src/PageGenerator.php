@@ -24,7 +24,7 @@ final class PageGenerator{
 
 	public static function CONNECT_CONFIRM(string $discordIcon, string $discordName, string $xblIcon, string $gamertag) : never{
 		$fingerprintJs = "";
-		if(!empty($_ENV["FP_API_KEY"])){
+		if(FINGERPRINT_JS_ENABLED){
 			$fingerprintJs = self::prepare("fingerprint.js", [
 				"%INSERT_FP_SCRIPT_FILE%" => $_ENV["FP_PUBLIC_KEY"],
 				"%INJECT_ENDPOINT_CODE%" => !empty($_ENV["FP_ENDPOINT"]) ? "{endpoint:\"{$_ENV["FP_ENDPOINT"]}\"}" : ""
