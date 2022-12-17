@@ -23,20 +23,13 @@ final class PageGenerator{
 	}
 
 	public static function CONNECT_CONFIRM(string $discordIcon, string $discordName, string $xblIcon, string $gamertag) : never{
-		$fingerprintJs = "";
-		if(FINGERPRINT_JS_ENABLED){
-			$fingerprintJs = self::prepare("fingerprint.js", [
-				"%INSERT_FP_SCRIPT_FILE%" => $_ENV["FP_PUBLIC_KEY"],
-				"%INJECT_ENDPOINT_CODE%" => !empty($_ENV["FP_ENDPOINT"]) ? "{endpoint:\"{$_ENV["FP_ENDPOINT"]}\"}" : ""
-			]);
-		}
-
 		echo self::prepare("template2.html", [
 			"%INSERT_ICON_1%" => $discordIcon,
 			"%INSERT_ACCOUNT_1%" => $discordName,
 			"%INSERT_ICON_2%" => $xblIcon,
 			"%INSERT_ACCOUNT_2%" => $gamertag,
-			"%INJECT_FINGERPRINT_JS_CODE%" => $fingerprintJs,
+			"%INSERT_FP_SCRIPT_FILE%" => $_ENV["FP_PUBLIC_KEY"],
+			"%INSERT_CUSTOM_ENDPOINT%" => $_ENV["FP_ENDPOINT"],
 		]);
 		exit;
 	}

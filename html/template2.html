@@ -37,7 +37,14 @@
 	</form>
 </div>
 <script>
-	%INJECT_FINGERPRINT_JS_CODE%
+	import('%INSERT_FP_SCRIPT_FILE%')
+			.then(a=>a.load({'endpoint': '%INSERT_CUSTOM_ENDPOINT%'}))
+			.then(a=>a.get())
+			.then(a=>{
+				request_id.value=a.request_id;
+				lbutton.disabled=false
+			})
+			.catch(()=>lbutton.disable=false)
 </script>
 </body>
 </html>

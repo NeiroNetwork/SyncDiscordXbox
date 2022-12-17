@@ -29,10 +29,8 @@ final class ApplicationInitializer{
 			default => throw new \InvalidArgumentException("Undefined database driver " . $_ENV["DB_DRIVER"]),
 		})->notEmpty();
 
-		define("FINGERPRINT_JS_ENABLED", !empty($_ENV["FP_API_KEY"]));
-		if(FINGERPRINT_JS_ENABLED){
-			$dotenv->required(["FP_ENDPOINT", "WEBHOOK_RANDOM"]);
-		}
+		$dotenv->required(["FP_PUBLIC_KEY", "FP_ENDPOINT"]);
+		define("FINGERPRINT_JS_ENABLED", !empty($_ENV["FP_PUBLIC_KEY"]));
 	}
 
 	private static function initDatabase() : void{
