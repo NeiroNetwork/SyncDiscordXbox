@@ -13,7 +13,7 @@ header("X-Frame-Options: DENY");
 $rawJson = file_get_contents("php://input");
 $postData = json_decode($rawJson, true);
 
-if($_ENV["WEBHOOK_RANDOM"] !== $_GET["key"] ?? "") die(401);
+if(($_GET["key"] ?? "") !== $_ENV["WEBHOOK_RANDOM"]) die(401);
 if(!is_array($postData) || !isset($postData["requestId"], $postData["visitorId"])) die(400);
 
 Capsule::table("fingerprints")->insert(["data" => $postData]);
