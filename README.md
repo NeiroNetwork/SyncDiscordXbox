@@ -92,6 +92,9 @@ php scripts/database.php up
 php scripts/database.php down
 ```
 
+## FingerprintJS Pro
+ウェブフックURL: `https://example.com/webhook/identification.php?key=WEBHOOK_RANDOMの値` と設定する
+
 ## ローカルでのテスト
 ポートは`8080`から好きなポートに変更可能です。
 1. 各種アプリケーションのリダイレクトURIに `http://localhost:8080` を追加

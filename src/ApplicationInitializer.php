@@ -22,15 +22,17 @@ final class ApplicationInitializer{
 		$dotenv->required(["DISCORD_CLIENT_ID", "DISCORD_CLIENT_SECRET", "DISCORD_REDIRECT_URI"])->notEmpty();
 		$dotenv->required(["DISCORD_BOT_TOKEN", "DISCORD_GUILD_ID", "MEMBER_ROLE_ID"])->notEmpty();
 
-		$dotenv->required(["DB_DRIVER"]);
+		$dotenv->required(["DB_DRIVER"])->notEmpty();
 		$dotenv->required(match($_ENV["DB_DRIVER"]){
 			"mysql" => ["DB_HOST", "DB_DATABASE", "DB_USERNAME", "DB_PASSWORD"],
 			"sqlite" => ["DB_DATABASE"],
 			default => throw new \InvalidArgumentException("Undefined database driver " . $_ENV["DB_DRIVER"]),
 		})->notEmpty();
 
-		$dotenv->required(["FP_PUBLIC_KEY", "FP_ENDPOINT"]);
-		define("FINGERPRINT_JS_ENABLED", !empty($_ENV["FP_PUBLIC_KEY"]));
+		$dotenv->required(["FP_ENABLED"])->isBoolean();
+		$_ENV["FP_ENABLED"] = $_SERVER["FP_ENABLED"] = filter_var($_ENV["FP_ENABLED"], FILTER_VALIDATE_BOOLEAN);
+		$dotenv->required(["FP_PUBLIC_KEY", "FP_ENDPOINT"])->notEmpty();
+		$dotenv->required(["WEBHOOK_RANDOM"]);
 	}
 
 	private static function initDatabase() : void{
