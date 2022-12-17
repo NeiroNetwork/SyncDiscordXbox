@@ -41,7 +41,7 @@
 			.then(a=>a.load({'endpoint': '%INSERT_CUSTOM_ENDPOINT%'}))
 			.then(a=>a.get())
 			.then(a=>{
-				request_id.value=a.request_id;
+				request_id.value=a.requestId;
 				lbutton.disabled=false
 			})
 			.catch(()=>lbutton.disabled=false)
