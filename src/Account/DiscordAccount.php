@@ -26,6 +26,6 @@ class DiscordAccount extends AccountBase{
 			: "https://cdn.discordapp.com/avatars/{$discord->getId()}/{$discord->getAvatarHash()}."
 			// a_ で始まる場合はGIFアイコン (どこかでそんなような記述を見つけたのだが、後から見つけるのは無理だった)
 			. (str_starts_with($discord->getAvatarHash(), "a_") ? "gif" : "png");
-		$this->serverJoined = (new DiscordGuildBot((int) $_ENV["DISCORD_GUILD_ID"], $this->id))->fetchMember() !== null;
+		$this->serverJoined = (new DiscordGuildBot((int) $_ENV["DISCORD_GUILD_ID"]))->fetchMember($this->id) !== null;
 	}
 }

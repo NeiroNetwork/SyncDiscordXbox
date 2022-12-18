@@ -13,35 +13,32 @@ class DiscordGuildBot{
 
 	private readonly DiscordClient $client;
 
-	public function __construct(
-		private readonly int $guild,
-		private readonly int $user
-	){
+	public function __construct(private readonly int $guild){
 		$this->client = new DiscordClient(["token" => $_ENV["DISCORD_BOT_TOKEN"]]);
 	}
 
-	public function addRole(int $role) : void{
+	public function addRole(int $user, int $role) : void{
 		$this->client->guild->addGuildMemberRole([
 			"guild.id" => $this->guild,
-			"user.id" => $this->user,
+			"user.id" => $user,
 			"role.id" => $role
 		]);
 	}
 
-	public function changeNick(string $nick) : void{
+	public function changeNick(int $user, string $nick) : void{
 		$this->client->guild->modifyGuildMember([
 			"guild.id" => $this->guild,
-			"user.id" => $this->user,
+			"user.id" => $user,
 			"nick" => $nick
 		]);
 	}
 
-	public function fetchMember() : ?Member{
+	public function fetchMember(int $user) : ?Member{
 		try{
 			/** @var Result $result */
 			$result = $this->client->guild->getGuildMember([
 				"guild.id" => $this->guild,
-				"user.id" => $this->user
+				"user.id" => $user
 			]);
 			return new Member($result);
 		}catch(CommandClientException){

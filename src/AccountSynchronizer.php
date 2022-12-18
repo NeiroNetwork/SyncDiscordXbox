@@ -34,8 +34,8 @@ class AccountSynchronizer{
 	 * @throws CommandClientException
 	 */
 	private static function modifyUser(int $userId, int $roleId, string $nick) : void{
-		$bot = new DiscordGuildBot((int) $_ENV["DISCORD_GUILD_ID"], $userId);
-		$bot->addRole($roleId);
-		$bot->changeNick($nick);
+		$bot = new DiscordGuildBot((int) $_ENV["DISCORD_GUILD_ID"]);
+		$bot->addRole($userId, $roleId);
+		$bot->changeNick($userId, $nick);
 	}
 }
