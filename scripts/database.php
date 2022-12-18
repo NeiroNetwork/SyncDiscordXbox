@@ -38,7 +38,12 @@ function up(){
 	if(!Capsule::schema()->hasTable("fingerprints")){
 		echo "Creating \"fingerprints\" table..." . PHP_EOL;
 		Capsule::schema()->create("fingerprints", function(Blueprint $table) : void{
-			$table->json("data");
+			$table->string("request_id")->primary();
+			$table->string("visitor_id")->nullable(false);
+			$table->ipAddress("ip")->nullable(false);
+			$table->bigInteger("timestamp")->nullable(false);
+			$table->double("confidence/score")->nullable();
+			$table->json("raw");
 		});
 	}
 }

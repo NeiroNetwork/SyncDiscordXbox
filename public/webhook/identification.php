@@ -17,4 +17,11 @@ $rawJson = file_get_contents("php://input");
 $data = json_decode($rawJson, true, flags: JSON_THROW_ON_ERROR);
 if(!is_array($data) || !isset($data["requestId"], $data["visitorId"])) die(400);
 
-Capsule::table("fingerprints")->insert(["data" => $rawJson]);
+Capsule::table("fingerprints")->insert([
+	"request_id" => $data["requestId"],
+	"visitor_id" => $data["visitorId"],
+	"ip" => $data["ip"],
+	"timestamp" => $data["timestamp"],
+	"confidence/score" => $data["confidence"]["score"],
+	"raw" => $rawJson,
+]);
