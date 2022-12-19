@@ -66,10 +66,10 @@ if(!empty($_SESSION["step_one"]) && !empty($_SESSION["step_two"])){
 	/** @var XboxAccount $xbox */
 	$xbox = $_SESSION["step_two"];
 
-	if(isset($_GET["request_id"])){
+	if(isset($_POST["request_id"])){
 		if($_ENV["FP_ENABLED"]){
 			$result = Capsule::table("fingerprints")->where("request_id", "=", $_GET["request_id"])->first();
-			if(!isset($result->request_id, $result->ip) || $result->request_id !== $_GET["request_id"] || $result->ip !== $_SERVER["REMOTE_ADDR"]){
+			if(!isset($result->request_id, $result->ip) || $result->request_id !== $_POST["request_id"] || $result->ip !== $_SERVER["REMOTE_ADDR"]){
 				PageGenerator::DIALOG("認証に失敗しました", "不正なリクエストを受け取りました。もう一度お試しください。");
 			}
 		}
