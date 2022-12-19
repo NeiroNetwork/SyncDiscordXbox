@@ -17,7 +17,7 @@ function up(){
 			$table->bigInteger("discord")->unsigned()->primary();
 			$table->bigInteger("xuid")->unsigned()->nullable(false);
 			$table->ipAddress("ip")->nullable(false);
-			$table->string("fingerprint")->nullable(false);
+			$table->string("fingerprint", 20)->nullable(false);
 		});
 	}
 
@@ -40,8 +40,8 @@ function up(){
 	if(!Capsule::schema()->hasTable("fingerprints")){
 		echo "Creating \"fingerprints\" table..." . PHP_EOL;
 		Capsule::schema()->create("fingerprints", function(Blueprint $table) : void{
-			$table->string("request_id")->primary();
-			$table->string("visitor_id")->nullable(false);
+			$table->string("request_id", 20)->primary();
+			$table->string("visitor_id", 20)->nullable(false);
 			$table->ipAddress("ip")->nullable(false);
 			$table->bigInteger("timestamp")->unsigned()->nullable(false);
 			$table->double("confidence/score")->nullable();
