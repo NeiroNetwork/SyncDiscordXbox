@@ -23,7 +23,7 @@ $discord = new Discord([
 ]);
 
 $discord->on(Event::GUILD_MEMBER_ADD, function(Member $member){
-	$ids = Capsule::table("accounts")->where("discord", "=", (int) $member->id)->first();
+	$ids = Capsule::table("linked_data")->where("discord", "=", (int) $member->id)->first();
 	if(empty($ids)) return;
 
 	$token1 = Capsule::table("discord_tokens")->where("id", "=", $ids->discord)->first();
@@ -33,7 +33,7 @@ $discord->on(Event::GUILD_MEMBER_ADD, function(Member $member){
 	try{
 		$account1 = (new DiscordAuthenticator())->getAccount($token1->refresh_token);
 		$account2 = (new XboxliveAuthenticator())->getAccount($token2->refresh_token);
-		AccountSynchronizer::sync($account1, $account2);
+		AccountSynchronizer::modifyUser($account1->id, (int) $_ENV["MEMBER_ROLE_ID"], $account2->name);
 	}catch(IdentityProviderException){
 		// TODO: 使えないトークンはデータベースから削除する？
 		return;

@@ -5,6 +5,7 @@ declare(strict_types=1);
 require_once dirname(__DIR__) . "/vendor/autoload.php";
 
 use GuzzleHttp\Command\Exception\CommandClientException;
+use Illuminate\Database\Capsule\Manager as Capsule;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use NeiroNetwork\SyncDiscordXbox\Account\DiscordAccount;
 use NeiroNetwork\SyncDiscordXbox\Account\XboxAccount;
@@ -66,15 +67,23 @@ if(!empty($_SESSION["step_one"]) && !empty($_SESSION["step_two"])){
 	$xbox = $_SESSION["step_two"];
 
 	if(isset($_GET["request_id"])){
+		if($_ENV["FP_ENABLED"]){
+			$result = Capsule::table("fingerprints")->where("request_id", "=", $_GET["request_id"])->first();
+			if(!isset($result->request_id, $result->ip) || $result->request_id !== $_GET["request_id"] || $result->ip !== $_SERVER["REMOTE_ADDR"]){
+				PageGenerator::DIALOG("認証に失敗しました", "不正なリクエストを受け取りました。もう一度お試しください。");
+			}
+		}
+
 		session_destroy();
 		try{
-			AccountSynchronizer::sync($discord, $xbox);
+			AccountSynchronizer::storeData($discord, $xbox, $_SERVER["REMOTE_ADDR"], $result->visitor_id ?? "");
+			AccountSynchronizer::modifyUser($discord->id, (int) $_ENV["MEMBER_ROLE_ID"], $xbox->name);
 		}catch(CommandClientException){
 			PageGenerator::DIALOG(
 				"認証に失敗しました",
 				"Discordアカウントとの連携中にエラーが発生しました。もう一度お試しください。"
 			);
-		}catch(Exception){
+		}catch(PDOException | LogicException){
 			PageGenerator::DIALOG(
 				"認証に失敗しました",
 				"データベースに内部エラーが発生しました。しばらく待ってから再度お試しください。"

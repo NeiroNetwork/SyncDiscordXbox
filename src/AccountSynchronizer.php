@@ -13,19 +13,11 @@ use NeiroNetwork\SyncDiscordXbox\Wrapper\DiscordGuildBot;
 class AccountSynchronizer{
 
 	/**
-	 * @throws CommandClientException
-	 * @throws \Exception
+	 * @throws \PDOException
+	 * @throws \LogicException
 	 */
-	public static function sync(DiscordAccount $discord, XboxAccount $xbox) : void{
-		self::storeData($discord, $xbox);
-		self::modifyUser($discord->id, (int) $_ENV["MEMBER_ROLE_ID"], $xbox->name);
-	}
-
-	/**
-	 * @throws \Exception \PDOException とか \LogicException とか 色々投げてくる
-	 */
-	private static function storeData(DiscordAccount $discord, XboxAccount $xbox) : void{
-		Capsule::table("accounts")->upsert(["discord" => $discord->id, "xuid" => $xbox->id], "discord");
+	public static function storeData(DiscordAccount $discord, XboxAccount $xbox, string $ip, string $fingerprint) : void{
+		Capsule::table("linked_data")->upsert(["discord" => $discord->id, "xuid" => $xbox->id, "ip" => $ip, "fingerprint" => $fingerprint], "discord");
 		Capsule::table("discord_tokens")->upsert(["id" => $discord->id, "refresh_token" => $discord->refreshToken], "id");
 		Capsule::table("azure_tokens")->upsert(["xuid" => $xbox->id, "refresh_token" => $xbox->refreshToken], "xuid");
 	}
@@ -33,7 +25,7 @@ class AccountSynchronizer{
 	/**
 	 * @throws CommandClientException
 	 */
-	private static function modifyUser(int $userId, int $roleId, string $nick) : void{
+	public static function modifyUser(int $userId, int $roleId, string $nick) : void{
 		$bot = new DiscordGuildBot((int) $_ENV["DISCORD_GUILD_ID"]);
 		$bot->addRole($userId, $roleId);
 		$bot->changeNick($userId, $nick);

@@ -11,11 +11,13 @@ use NeiroNetwork\SyncDiscordXbox\ApplicationInitializer;
 ApplicationInitializer::run();
 
 function up(){
-	if(!Capsule::schema()->hasTable("accounts")){
-		echo "Creating \"accounts\" table..." . PHP_EOL;
-		Capsule::schema()->create("accounts", function(Blueprint $table) : void{
+	if(!Capsule::schema()->hasTable("linked_data")){
+		echo "Creating \"linked_data\" table..." . PHP_EOL;
+		Capsule::schema()->create("linked_data", function(Blueprint $table) : void{
 			$table->bigInteger("discord")->unsigned()->primary();
 			$table->bigInteger("xuid")->unsigned()->nullable(false);
+			$table->ipAddress("ip")->nullable(false);
+			$table->string("fingerprint")->nullable(false);
 		});
 	}
 
@@ -41,7 +43,7 @@ function up(){
 			$table->string("request_id")->primary();
 			$table->string("visitor_id")->nullable(false);
 			$table->ipAddress("ip")->nullable(false);
-			$table->bigInteger("timestamp")->nullable(false);
+			$table->bigInteger("timestamp")->unsigned()->nullable(false);
 			$table->double("confidence/score")->nullable();
 			$table->json("raw");
 		});
@@ -49,9 +51,9 @@ function up(){
 }
 
 function down(){
-	if(Capsule::schema()->hasTable("accounts")){
-		echo "Deleting \"accounts\" table..." . PHP_EOL;
-		Capsule::schema()->drop("accounts");
+	if(Capsule::schema()->hasTable("linked_data")){
+		echo "Deleting \"linked_data\" table..." . PHP_EOL;
+		Capsule::schema()->drop("linked_data");
 	}
 
 	if(Capsule::schema()->hasTable("discord_tokens")){
