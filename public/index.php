@@ -63,50 +63,51 @@ if(!empty($_SESSION["step_one"]) && !empty($_SESSION["step_two"])){
 	/** @var XboxAccount $xbox */
 	$xbox = $_SESSION["step_two"];
 
-	if(isset($_POST["request_id"])){
-		if($_ENV["FP_ENABLED"]){
-			$result = Capsule::table("fingerprints")->where("request_id", "=", $_POST["request_id"])->first();
-			if(!isset($result->request_id, $result->ip) || $result->request_id !== $_POST["request_id"] || $result->ip !== $_SERVER["REMOTE_ADDR"]){
-				PageGenerator::DIALOG("連携に失敗しました", "リクエストの検証に失敗しました。もう一度お試しください。");
-			}
-		}
+	// アカウント連携ボタンを押していない
+	if(!isset($_POST["request_id"])){
+		PageGenerator::CONNECT_CONFIRM($discord->avatar, $discord->name, $xbox->avatar, $xbox->name);
+	}
 
-		if($_ENV["IPQS_ENABLED"]){
-			if(empty($_SERVER["HTTP_USER_AGENT"]) || empty($_SERVER["HTTP_ACCEPT_LANGUAGE"])){
-				PageGenerator::DIALOG("連携に失敗しました", "不正なリクエストを受け取りました。もう一度お試しください。");
-			}
-			try{
-				$result = (new ProxyDetector($_ENV["IPQS_TOKEN"]))->check(
-					$_SERVER["REMOTE_ADDR"],
-					1,
-					$_SERVER["HTTP_USER_AGENT"],
-					$_SERVER["HTTP_ACCEPT_LANGUAGE"]
-				);
-				Capsule::table("ip_quality_score")->upsert([
-					"ip" => $_SERVER["REMOTE_ADDR"],
-					"proxy" => $result->proxy,
-					"fraud_score" => $result->fraudScore,
-					"raw" => $result->rawJson,
-					"updated_at" => microtime(true),
-				], "ip");
-			}catch(ProxyDetectionException $e){
-				PageGenerator::DIALOG("連携に失敗しました", "リクエストの検証中にエラーが発生しました。時間をおいてから、もう一度お試しください。");
-			}catch(PDOException | LogicException){
-				PageGenerator::DIALOG("連携に失敗しました", "データベースに内部エラーが発生しました。しばらく待ってから再度お試しください。");
-			}
+	if($_ENV["FP_ENABLED"]){
+		$result = Capsule::table("fingerprints")->where("request_id", "=", $_POST["request_id"])->first();
+		if(!isset($result->request_id, $result->ip) || $result->request_id !== $_POST["request_id"] || $result->ip !== $_SERVER["REMOTE_ADDR"]){
+			PageGenerator::DIALOG("連携に失敗しました", "リクエストの検証に失敗しました。もう一度お試しください。");
 		}
+	}
 
-		session_destroy();
+	if($_ENV["IPQS_ENABLED"]){
+		if(empty($_SERVER["HTTP_USER_AGENT"]) || empty($_SERVER["HTTP_ACCEPT_LANGUAGE"])){
+			PageGenerator::DIALOG("連携に失敗しました", "不正なリクエストを受け取りました。もう一度お試しください。");
+		}
 		try{
-			AccountSynchronizer::storeData($discord, $xbox, $_SERVER["REMOTE_ADDR"], $result->visitor_id ?? "");
-			AccountSynchronizer::modifyUser($discord->id, (int) $_ENV["MEMBER_ROLE_ID"], $xbox->name);
-		}catch(CommandClientException){
-			PageGenerator::DIALOG("連携に失敗しました", "Discordアカウントとの連携中にエラーが発生しました。もう一度お試しください。");
+			$result = (new ProxyDetector($_ENV["IPQS_TOKEN"]))->check(
+				$_SERVER["REMOTE_ADDR"],
+				1,
+				$_SERVER["HTTP_USER_AGENT"],
+				$_SERVER["HTTP_ACCEPT_LANGUAGE"]
+			);
+			Capsule::table("ip_quality_score")->upsert([
+				"ip" => $_SERVER["REMOTE_ADDR"],
+				"proxy" => $result->proxy,
+				"fraud_score" => $result->fraudScore,
+				"raw" => $result->rawJson,
+				"updated_at" => microtime(true),
+			], "ip");
+		}catch(ProxyDetectionException $e){
+			PageGenerator::DIALOG("連携に失敗しました", "リクエストの検証中にエラーが発生しました。時間をおいてから、もう一度お試しください。");
 		}catch(PDOException | LogicException){
 			PageGenerator::DIALOG("連携に失敗しました", "データベースに内部エラーが発生しました。しばらく待ってから再度お試しください。");
 		}
-		PageGenerator::DIALOG("連携に成功しました", "アカウントの連携が完了しました。安全にこのページを閉じることができます。");
 	}
 
-	PageGenerator::CONNECT_CONFIRM($discord->avatar, $discord->name, $xbox->avatar, $xbox->name);
+	session_destroy();
+	try{
+		AccountSynchronizer::storeData($discord, $xbox, $_SERVER["REMOTE_ADDR"], $result->visitor_id ?? "");
+		AccountSynchronizer::modifyUser($discord->id, (int) $_ENV["MEMBER_ROLE_ID"], $xbox->name);
+	}catch(CommandClientException){
+		PageGenerator::DIALOG("連携に失敗しました", "Discordアカウントとの連携中にエラーが発生しました。もう一度お試しください。");
+	}catch(PDOException | LogicException){
+		PageGenerator::DIALOG("連携に失敗しました", "データベースに内部エラーが発生しました。しばらく待ってから再度お試しください。");
+	}
+	PageGenerator::DIALOG("連携に成功しました", "アカウントの連携が完了しました。安全にこのページを閉じることができます。");
 }
