@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace NeiroNetwork\SyncDiscordXbox\Wrapper;
+namespace NeiroNetwork\SyncDiscordXbox\Wrapper\Discord;
 
 use GuzzleHttp\Command\Exception\CommandClientException;
 use GuzzleHttp\Command\Result;
-use NeiroNetwork\SyncDiscordXbox\Wrapper\Discord\Member;
+use NeiroNetwork\SyncDiscordXbox\Wrapper\Discord\Model\Member;
 use RestCord\DiscordClient;
 
 class DiscordGuildBot{

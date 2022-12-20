@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace NeiroNetwork\SyncDiscordXbox\Account;
 
-use NeiroNetwork\SyncDiscordXbox\Wrapper\DiscordGuildBot;
+use NeiroNetwork\SyncDiscordXbox\Wrapper\Discord\DiscordGuildBot;
 use Wohali\OAuth2\Client\Provider\DiscordResourceOwner;
 
 class DiscordAccount extends AccountBase{

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace NeiroNetwork\SyncDiscordXbox\Wrapper\Discord;
+namespace NeiroNetwork\SyncDiscordXbox\Wrapper\Discord\Model;
 
 use GuzzleHttp\Command\Result;
 

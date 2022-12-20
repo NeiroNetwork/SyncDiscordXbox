@@ -8,7 +8,7 @@ use GuzzleHttp\Command\Exception\CommandClientException;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use NeiroNetwork\SyncDiscordXbox\Account\DiscordAccount;
 use NeiroNetwork\SyncDiscordXbox\Account\XboxAccount;
-use NeiroNetwork\SyncDiscordXbox\Wrapper\DiscordGuildBot;
+use NeiroNetwork\SyncDiscordXbox\Wrapper\Discord\DiscordGuildBot;
 
 class AccountSynchronizer{
 
