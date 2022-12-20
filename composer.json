@@ -1,6 +1,8 @@
 {
     "require": {
         "bigpino67/oauth2-xblive": "dev-master",
+        "ext-curl": "*",
+        "ext-pdo": "*",
         "illuminate/database": "^9.26",
         "restcord/restcord": "v9.x-dev",
         "team-reflex/discord-php": "^7.3",

@@ -14,6 +14,8 @@ use NeiroNetwork\SyncDiscordXbox\ApplicationInitializer;
 use NeiroNetwork\SyncDiscordXbox\Authenticator\DiscordAuthenticator;
 use NeiroNetwork\SyncDiscordXbox\Authenticator\XboxliveAuthenticator;
 use NeiroNetwork\SyncDiscordXbox\PageGenerator;
+use NeiroNetwork\SyncDiscordXbox\Wrapper\IPQualityScore\Exception\ProxyDetectionException;
+use NeiroNetwork\SyncDiscordXbox\Wrapper\IPQualityScore\ProxyDetector;
 
 ApplicationInitializer::run();
 header("X-Frame-Options: DENY");
@@ -78,37 +80,24 @@ if(!empty($_SESSION["step_one"]) && !empty($_SESSION["step_two"])){
 			if(empty($_SERVER["HTTP_USER_AGENT"]) || empty($_SERVER["HTTP_ACCEPT_LANGUAGE"])){
 				PageGenerator::DIALOG("認証に失敗しました", "不正なリクエストを受け取りました。もう一度お試しください。");
 			}
-			$json = file_get_contents("https://ipqualityscore.com/api/json/ip", context: stream_context_create([
-				"http" => [
-					"method" => "POST",
-					"header" => "Content-Type: application/x-www-form-urlencoded",
-					"content" => http_build_query([
-						"key" => $_ENV["IPQS_TOKEN"],
-						"ip" => $_SERVER["REMOTE_ADDR"],
-						"allow_public_access_points" => false,
-						"strictness" => 1,
-						"user_agent" => $_SERVER["HTTP_USER_AGENT"],
-						"user_language" => $_SERVER["HTTP_ACCEPT_LANGUAGE"],
-					], arg_separator: "&")
-				]
-			]));
-			$result = json_decode($json, true);
-			if(($result["success"] ?? false) !== true){
-				PageGenerator::DIALOG("認証に失敗しました", "リクエストの検証中にエラーが発生しました。時間をおいてから、もう一度お試しください。");
-			}
 			try{
+				$result = (new ProxyDetector($_ENV["IPQS_TOKEN"]))->check(
+					$_SERVER["REMOTE_ADDR"],
+					1,
+					$_SERVER["HTTP_USER_AGENT"],
+					$_SERVER["HTTP_ACCEPT_LANGUAGE"]
+				);
 				Capsule::table("ip_quality_score")->upsert([
 					"ip" => $_SERVER["REMOTE_ADDR"],
-					"proxy" => $result["proxy"],
-					"fraud_score" => $result["fraud_score"],
-					"raw" => $json,
+					"proxy" => $result->proxy,
+					"fraud_score" => $result->fraudScore,
+					"raw" => $result->rawJson,
 					"updated_at" => microtime(true),
 				], "ip");
+			}catch(ProxyDetectionException $e){
+				PageGenerator::DIALOG("認証に失敗しました", "リクエストの検証中にエラーが発生しました。時間をおいてから、もう一度お試しください。");
 			}catch(PDOException | LogicException){
-				PageGenerator::DIALOG(
-					"認証に失敗しました",
-					"データベースに内部エラーが発生しました。しばらく待ってから再度お試しください。"
-				);
+				PageGenerator::DIALOG("認証に失敗しました", "データベースに内部エラーが発生しました。しばらく待ってから再度お試しください。");
 			}
 		}
 
