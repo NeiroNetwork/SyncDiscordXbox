@@ -24,7 +24,7 @@ session_start();
 if(isset($_GET["error"])){
 	$denied = $_GET["error"] === "access_denied";
 	PageGenerator::DIALOG(
-		$denied ? "キャンセルされました" : "認証がキャンセルされました",
+		$denied ? "キャンセルされました" : "連携がキャンセルされました",
 		$denied ? "アプリケーションの認証がユーザーによってキャンセルされました。アカウントの連携は完了していません。" :
 			"アプリケーションの認証中にエラーが発生しました。アカウントの連携は完了していません。"
 	);
@@ -36,19 +36,14 @@ if(isset($_GET["reset"])) session_destroy() && session_start();
 if(empty($_SESSION["step_one"])){
 	$authenticator = new DiscordAuthenticator();
 	try{
-		$discordAccount = $authenticator->getAccount();
+		$discordAccount = $_SESSION["step_one"] = $authenticator->getAccount();
 	}catch(IdentityProviderException){
 		$authenticator->startWebAuthentication();
 	}
 
 	if(!$discordAccount->serverJoined){
-		PageGenerator::DIALOG(
-			"認証に失敗しました",
-			"あなたはDiscordサーバーに参加していません。アカウントを連携するにはサーバーに参加する必要があります。"
-		);
+		PageGenerator::DIALOG("連携に失敗しました", "あなたはDiscordサーバーに参加していません。アカウントを連携するにはサーバーに参加する必要があります。");
 	}
-
-	$_SESSION["step_one"] = $discordAccount;
 }
 
 // Xbox Liveの認証
@@ -72,13 +67,13 @@ if(!empty($_SESSION["step_one"]) && !empty($_SESSION["step_two"])){
 		if($_ENV["FP_ENABLED"]){
 			$result = Capsule::table("fingerprints")->where("request_id", "=", $_POST["request_id"])->first();
 			if(!isset($result->request_id, $result->ip) || $result->request_id !== $_POST["request_id"] || $result->ip !== $_SERVER["REMOTE_ADDR"]){
-				PageGenerator::DIALOG("認証に失敗しました", "不正なリクエストを受け取りました。もう一度お試しください。");
+				PageGenerator::DIALOG("連携に失敗しました", "リクエストの検証に失敗しました。もう一度お試しください。");
 			}
 		}
 
 		if($_ENV["IPQS_ENABLED"]){
 			if(empty($_SERVER["HTTP_USER_AGENT"]) || empty($_SERVER["HTTP_ACCEPT_LANGUAGE"])){
-				PageGenerator::DIALOG("認証に失敗しました", "不正なリクエストを受け取りました。もう一度お試しください。");
+				PageGenerator::DIALOG("連携に失敗しました", "不正なリクエストを受け取りました。もう一度お試しください。");
 			}
 			try{
 				$result = (new ProxyDetector($_ENV["IPQS_TOKEN"]))->check(
@@ -95,9 +90,9 @@ if(!empty($_SESSION["step_one"]) && !empty($_SESSION["step_two"])){
 					"updated_at" => microtime(true),
 				], "ip");
 			}catch(ProxyDetectionException $e){
-				PageGenerator::DIALOG("認証に失敗しました", "リクエストの検証中にエラーが発生しました。時間をおいてから、もう一度お試しください。");
+				PageGenerator::DIALOG("連携に失敗しました", "リクエストの検証中にエラーが発生しました。時間をおいてから、もう一度お試しください。");
 			}catch(PDOException | LogicException){
-				PageGenerator::DIALOG("認証に失敗しました", "データベースに内部エラーが発生しました。しばらく待ってから再度お試しください。");
+				PageGenerator::DIALOG("連携に失敗しました", "データベースに内部エラーが発生しました。しばらく待ってから再度お試しください。");
 			}
 		}
 
@@ -106,17 +101,11 @@ if(!empty($_SESSION["step_one"]) && !empty($_SESSION["step_two"])){
 			AccountSynchronizer::storeData($discord, $xbox, $_SERVER["REMOTE_ADDR"], $result->visitor_id ?? "");
 			AccountSynchronizer::modifyUser($discord->id, (int) $_ENV["MEMBER_ROLE_ID"], $xbox->name);
 		}catch(CommandClientException){
-			PageGenerator::DIALOG(
-				"認証に失敗しました",
-				"Discordアカウントとの連携中にエラーが発生しました。もう一度お試しください。"
-			);
+			PageGenerator::DIALOG("連携に失敗しました", "Discordアカウントとの連携中にエラーが発生しました。もう一度お試しください。");
 		}catch(PDOException | LogicException){
-			PageGenerator::DIALOG(
-				"認証に失敗しました",
-				"データベースに内部エラーが発生しました。しばらく待ってから再度お試しください。"
-			);
+			PageGenerator::DIALOG("連携に失敗しました", "データベースに内部エラーが発生しました。しばらく待ってから再度お試しください。");
 		}
-		PageGenerator::DIALOG("認証に成功しました", "アカウントの連携が完了しました。安全にこのページを閉じることができます。");
+		PageGenerator::DIALOG("連携に成功しました", "アカウントの連携が完了しました。安全にこのページを閉じることができます。");
 	}
 
 	PageGenerator::CONNECT_CONFIRM($discord->avatar, $discord->name, $xbox->avatar, $xbox->name);
