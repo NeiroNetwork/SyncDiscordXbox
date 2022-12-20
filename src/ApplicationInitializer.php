@@ -33,6 +33,10 @@ final class ApplicationInitializer{
 		$_ENV["FP_ENABLED"] = $_SERVER["FP_ENABLED"] = filter_var($_ENV["FP_ENABLED"], FILTER_VALIDATE_BOOLEAN);
 		$dotenv->required(["FP_PUBLIC_KEY", "FP_ENDPOINT"])->notEmpty();
 		$dotenv->required(["WEBHOOK_RANDOM"]);
+
+		$dotenv->required(["IPQS_ENABLED"])->isBoolean();
+		$_ENV["IPQS_ENABLED"] = $_SERVER["IPQS_ENABLED"] = filter_var($_ENV["IPQS_ENABLED"], FILTER_VALIDATE_BOOLEAN);
+		$dotenv->required(["IPQS_TOKEN"]);
 	}
 
 	private static function initDatabase() : void{

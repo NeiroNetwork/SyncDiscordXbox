@@ -48,6 +48,17 @@ function up(){
 			$table->json("raw");
 		});
 	}
+
+	if(!Capsule::schema()->hasTable("ip_quality_score")){
+		echo "Creating \"ip_quality_score\" table..." . PHP_EOL;
+		Capsule::schema()->create("ip_quality_score", function(Blueprint $table) : void{
+			$table->ipAddress("ip")->primary();
+			$table->boolean("proxy")->nullable(false);
+			$table->unsignedTinyInteger("fraud_score")->nullable(false);
+			$table->json("raw")->nullable(false);
+			$table->unsignedDecimal("updated_at", 65, 6)->nullable(false);
+		});
+	}
 }
 
 function down(){
@@ -69,6 +80,11 @@ function down(){
 	if(Capsule::schema()->hasTable("fingerprints")){
 		echo "Deleting \"fingerprints\" table..." . PHP_EOL;
 		Capsule::schema()->drop("fingerprints");
+	}
+
+	if(Capsule::schema()->hasTable("ip_quality_score")){
+		echo "Deleting \"ip_quality_score\" table..." . PHP_EOL;
+		Capsule::schema()->drop("ip_quality_score");
 	}
 }
 
