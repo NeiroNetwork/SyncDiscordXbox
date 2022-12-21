@@ -26,8 +26,8 @@ $discord->on(Event::GUILD_MEMBER_ADD, function(Member $member){
 	$ids = Capsule::table("linked_data")->where("discord", "=", (int) $member->id)->first();
 	if(empty($ids)) return;
 
-	$token1 = Capsule::table("discord_tokens")->where("id", "=", $ids->discord)->first();
-	$token2 = Capsule::table("azure_tokens")->where("xuid", "=", $ids->xuid)->first();
+	$token1 = Capsule::table("discord_tokens")->where("user_id", "=", $ids->discord)->first();
+	$token2 = Capsule::table("xbox_tokens")->where("xuid", "=", $ids->xuid)->first();
 	if(empty($token1) || empty($token2)) return;
 
 	try{

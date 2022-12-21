@@ -24,14 +24,14 @@ function up(){
 	if(!Capsule::schema()->hasTable("discord_tokens")){
 		echo "Creating \"discord_tokens\" table..." . PHP_EOL;
 		Capsule::schema()->create("discord_tokens", function(Blueprint $table) : void{
-			$table->bigInteger("id")->unsigned()->primary();
+			$table->bigInteger("user_id")->unsigned()->primary();
 			$table->text("refresh_token")->nullable(false);
 		});
 	}
 
-	if(!Capsule::schema()->hasTable("azure_tokens")){
-		echo "Creating \"azure_tokens\" table..." . PHP_EOL;
-		Capsule::schema()->create("azure_tokens", function(Blueprint $table) : void{
+	if(!Capsule::schema()->hasTable("xbox_tokens")){
+		echo "Creating \"xbox_tokens\" table..." . PHP_EOL;
+		Capsule::schema()->create("xbox_tokens", function(Blueprint $table) : void{
 			$table->bigInteger("xuid")->unsigned()->primary();
 			$table->text("refresh_token")->nullable(false);
 		});
@@ -72,9 +72,9 @@ function down(){
 		Capsule::schema()->drop("discord_tokens");
 	}
 
-	if(Capsule::schema()->hasTable("azure_tokens")){
-		echo "Deleting \"azure_tokens\" table..." . PHP_EOL;
-		Capsule::schema()->drop("azure_tokens");
+	if(Capsule::schema()->hasTable("xbox_tokens")){
+		echo "Deleting \"xbox_tokens\" table..." . PHP_EOL;
+		Capsule::schema()->drop("xbox_tokens");
 	}
 
 	if(Capsule::schema()->hasTable("fingerprints")){
