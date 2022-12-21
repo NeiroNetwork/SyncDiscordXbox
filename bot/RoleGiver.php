@@ -35,8 +35,8 @@ $discord->on(Event::GUILD_MEMBER_ADD, function(Member $member){
 		$account2 = (new XboxliveAuthenticator())->getAccount($token2->refresh_token);
 		AccountSynchronizer::modifyUser($account1->id, (int) $_ENV["MEMBER_ROLE_ID"], $account2->name);
 	}catch(IdentityProviderException){
-		// TODO: 使えないトークンはデータベースから削除する？
-		return;
+		Capsule::table("discord_tokens")->where("user_id", "=", $ids->discord)->delete();
+		Capsule::table("xbox_tokens")->where("xuid", "=", $ids->xuid)->delete();
 	}catch(Exception){
 	}
 });
