@@ -10,7 +10,7 @@ use NeiroNetwork\SyncDiscordXbox\ApplicationInitializer;
 
 ApplicationInitializer::run();
 
-function up(){
+function up() : void{
 	if(!Capsule::schema()->hasTable("linked_data")){
 		echo "Creating \"linked_data\" table..." . PHP_EOL;
 		Capsule::schema()->create("linked_data", function(Blueprint $table) : void{
@@ -77,7 +77,7 @@ function up(){
 	}
 }
 
-function down(){
+function down() : void{
 	if(Capsule::schema()->hasTable("linked_data")){
 		echo "Deleting \"linked_data\" table..." . PHP_EOL;
 		Capsule::schema()->drop("linked_data");
