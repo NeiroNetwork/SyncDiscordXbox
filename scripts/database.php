@@ -59,6 +59,22 @@ function up(){
 			$table->unsignedDecimal("updated_at", 65, 6)->nullable(false);
 		});
 	}
+
+	if(!Capsule::schema()->hasTable("fud_discord")){
+		echo "Creating \"fud_discord\" table..." . PHP_EOL;
+		Capsule::schema()->create("fud_discord", function(Blueprint $table) : void{
+			$table->bigInteger("id")->unsigned()->primary();
+			$table->json("json")->nullable(false);
+		});
+	}
+
+	if(!Capsule::schema()->hasTable("fud_xbox")){
+		echo "Creating \"fud_xbox\" table..." . PHP_EOL;
+		Capsule::schema()->create("fud_xbox", function(Blueprint $table) : void{
+			$table->bigInteger("id")->unsigned()->primary();
+			$table->json("json")->nullable(false);
+		});
+	}
 }
 
 function down(){
@@ -85,6 +101,16 @@ function down(){
 	if(Capsule::schema()->hasTable("ip_quality_score")){
 		echo "Deleting \"ip_quality_score\" table..." . PHP_EOL;
 		Capsule::schema()->drop("ip_quality_score");
+	}
+
+	if(Capsule::schema()->hasTable("fud_discord")){
+		echo "Deleting \"fud_discord\" table..." . PHP_EOL;
+		Capsule::schema()->drop("fud_discord");
+	}
+
+	if(Capsule::schema()->hasTable("fud_xbox")){
+		echo "Deleting \"fud_xbox\" table..." . PHP_EOL;
+		Capsule::schema()->drop("fud_xbox");
 	}
 }
 
