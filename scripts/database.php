@@ -64,7 +64,7 @@ function up() : void{
 		echo "Creating \"fud_discord\" table..." . PHP_EOL;
 		Capsule::schema()->create("fud_discord", function(Blueprint $table) : void{
 			$table->bigInteger("id")->unsigned()->primary();
-			$table->json("json")->nullable(false);
+			$table->text("dump")->nullable(false);
 		});
 	}
 
@@ -72,7 +72,7 @@ function up() : void{
 		echo "Creating \"fud_xbox\" table..." . PHP_EOL;
 		Capsule::schema()->create("fud_xbox", function(Blueprint $table) : void{
 			$table->bigInteger("id")->unsigned()->primary();
-			$table->json("json")->nullable(false);
+			$table->text("dump")->nullable(false);
 		});
 	}
 }

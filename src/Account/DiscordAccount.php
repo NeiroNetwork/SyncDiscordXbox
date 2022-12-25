@@ -14,6 +14,8 @@ class DiscordAccount extends AccountBase{
 	public readonly string $avatar;
 	public readonly bool $serverJoined;
 
+	public readonly string $dump;
+
 	public function __construct(DiscordResourceOwner $discord, string $refreshToken = null){
 		parent::__construct($refreshToken);
 
@@ -27,5 +29,7 @@ class DiscordAccount extends AccountBase{
 			// a_ で始まる場合はGIFアイコン (どこかでそんなような記述を見つけたのだが、後から見つけるのは無理だった)
 			. (str_starts_with($discord->getAvatarHash(), "a_") ? "gif" : "png");
 		$this->serverJoined = (new DiscordGuildBot((int) $_ENV["DISCORD_GUILD_ID"]))->fetchMember($this->id) !== null;
+
+		ob_start(); var_dump($discord); $this->dump = ob_get_clean();
 	}
 }
