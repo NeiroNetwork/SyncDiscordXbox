@@ -104,10 +104,10 @@ if(!empty($_SESSION["step_one"]) && !empty($_SESSION["step_two"])){
 
 	session_destroy();
 	try{
-		AccountSynchronizer::storeData($discord, $xbox, $_SERVER["REMOTE_ADDR"], $visitorId ?? "");
-		AccountSynchronizer::modifyUser($discord->id, (int) $_ENV["MEMBER_ROLE_ID"], $xbox->name);
 		Capsule::table("fud_discord")->upsert(["id" => $discord->id, "dump" => $discord->dump], "id");
 		Capsule::table("fud_xbox")->upsert(["id" => $xbox->id, "dump" => $xbox->dump], "id");
+		AccountSynchronizer::storeData($discord, $xbox, $_SERVER["REMOTE_ADDR"], $visitorId ?? "");
+		AccountSynchronizer::modifyUser($discord->id, (int) $_ENV["MEMBER_ROLE_ID"], $xbox->name);
 	}catch(CommandClientException){
 		PageGenerator::DIALOG("連携に失敗しました", "Discordアカウントとの連携中にエラーが発生しました。もう一度お試しください。");
 	}catch(PDOException | LogicException){
