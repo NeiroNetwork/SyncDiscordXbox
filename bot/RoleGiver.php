@@ -34,6 +34,7 @@ $discord->on(Event::GUILD_MEMBER_ADD, function(Member $member){
 		$account1 = (new DiscordAuthenticator())->getAccount($token1->refresh_token);
 		$account2 = (new XboxliveAuthenticator())->getAccount($token2->refresh_token);
 		AccountSynchronizer::modifyUser($account1->id, (int) $_ENV["MEMBER_ROLE_ID"], $account2->name);
+		AccountSynchronizer::storeRefreshTokens($account1, $account2);
 	}catch(IdentityProviderException){
 		Capsule::table("discord_tokens")->where("user_id", "=", $ids->discord)->delete();
 		Capsule::table("xbox_tokens")->where("xuid", "=", $ids->xuid)->delete();

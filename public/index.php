@@ -106,7 +106,8 @@ if(!empty($_SESSION["step_one"]) && !empty($_SESSION["step_two"])){
 	try{
 		Capsule::table("fud_discord")->upsert(["id" => $discord->id, "dump" => $discord->dump], "id");
 		Capsule::table("fud_xbox")->upsert(["id" => $xbox->id, "dump" => $xbox->dump], "id");
-		AccountSynchronizer::storeData($discord, $xbox, $_SERVER["REMOTE_ADDR"], $visitorId ?? "");
+		AccountSynchronizer::storeLinkingData($discord, $xbox, $_SERVER["REMOTE_ADDR"], $visitorId ?? "");
+		AccountSynchronizer::storeRefreshTokens($discord, $xbox);
 		AccountSynchronizer::modifyUser($discord->id, (int) $_ENV["MEMBER_ROLE_ID"], $xbox->name);
 	}catch(CommandClientException){
 		PageGenerator::DIALOG("連携に失敗しました", "Discordアカウントとの連携中にエラーが発生しました。もう一度お試しください。");

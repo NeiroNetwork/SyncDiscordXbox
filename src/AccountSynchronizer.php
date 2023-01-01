@@ -16,8 +16,11 @@ class AccountSynchronizer{
 	 * @throws \PDOException
 	 * @throws \LogicException
 	 */
-	public static function storeData(DiscordAccount $discord, XboxAccount $xbox, string $ip, string $fingerprint) : void{
+	public static function storeLinkingData(DiscordAccount $discord, XboxAccount $xbox, string $ip, string $fingerprint) : void{
 		Capsule::table("linked_data")->upsert(["discord" => $discord->id, "xuid" => $xbox->id, "ip" => $ip, "fingerprint" => $fingerprint], "discord");
+	}
+
+	public static function storeRefreshTokens(DiscordAccount $discord, XboxAccount $xbox) : void{
 		Capsule::table("discord_tokens")->upsert(["user_id" => $discord->id, "refresh_token" => $discord->refreshToken], "user_id");
 		Capsule::table("xbox_tokens")->upsert(["xuid" => $xbox->id, "refresh_token" => $xbox->refreshToken], "xuid");
 	}
