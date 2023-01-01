@@ -20,6 +20,10 @@ class AccountSynchronizer{
 		Capsule::table("linked_data")->upsert(["discord" => $discord->id, "xuid" => $xbox->id, "ip" => $ip, "fingerprint" => $fingerprint], "discord");
 	}
 
+	/**
+	 * @throws \PDOException
+	 * @throws \LogicException
+	 */
 	public static function storeRefreshTokens(DiscordAccount $discord, XboxAccount $xbox) : void{
 		Capsule::table("discord_tokens")->upsert(["user_id" => $discord->id, "refresh_token" => $discord->refreshToken], "user_id");
 		Capsule::table("xbox_tokens")->upsert(["xuid" => $xbox->id, "refresh_token" => $xbox->refreshToken], "xuid");
